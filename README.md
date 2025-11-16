@@ -1,3 +1,2 @@
 # HealthSystem
-
-tree -I '.idea/|gradle|modules'
+tree -I '.gradle/|.idea|build'
