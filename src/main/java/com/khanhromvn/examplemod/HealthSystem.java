@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.khanhromvn.healthsystem;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -17,6 +17,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.stream.Collectors;
+import com.khanhromvn.healthsystem.stats.PlayerStatsCapability;
+import com.khanhromvn.healthsystem.network.ModNetwork;
+import com.khanhromvn.healthsystem.config.ModConfigs;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("examplemod")
@@ -24,8 +29,12 @@ public class ExampleMod
 {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
+    public static final String MODID = "examplemod";
 
     public ExampleMod() {
+        // Đăng ký file config trước
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ModConfigs.COMMON_SPEC);
+
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register the enqueueIMC method for modloading
@@ -44,6 +53,11 @@ public class ExampleMod
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+
+        // Đăng ký capability stats
+        PlayerStatsCapability.register();
+        // Khởi tạo kênh mạng
+        ModNetwork.init();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
