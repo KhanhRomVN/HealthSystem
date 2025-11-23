@@ -9,7 +9,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
+
+
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -37,18 +38,22 @@ public class PlayerStatsCapability {
 
     public static final ResourceLocation ID = new ResourceLocation(ExampleMod.MODID, "player_stats");
 
-    // Cách mới (FG 1.16.5) có thể dùng CapabilityToken (FG 1.16+)
-    public static final Capability<IPlayerStats> PLAYER_STATS_CAPABILITY = CapabilityManager.get(new CapabilityToken<IPlayerStats>(){});
+ // Capability instance - sẽ được đăng ký thông qua CapabilityManager
+ public static Capability<IPlayerStats> PLAYER_STATS_CAPABILITY = null;
 
-    /**
-     * Đăng ký capability với Forge (chỉ cần nếu dùng kiểu register cũ; với CapabilityToken get() đã handled).
-     * Ở đây giữ phương thức để tương thích & rõ ràng khi mở rộng sau.
-     */
-    public static void register() {
-        // Với kiểu token thì không cần register truyền Storage nữa.
-        // Nếu muốn dùng register thủ công (deprecated style):
-        // CapabilityManager.INSTANCE.register(IPlayerStats.class, new Storage(), IPlayerStats.PlayerStatsImpl::new);
-    }
+ /**
+ * Đăng ký capability với Forge (kiểu cũ cho Minecraft 1.16.5).
+ */
+ public static void register() {
+ CapabilityManager.INSTANCE.register(
+ IPlayerStats.class, 
+ new Storage(), 
+ IPlayerStats.PlayerStatsImpl::new
+ );
+ // Trong Minecraft 1.16.5, capability sẽ được tạo tự động sau khi register
+ // Chúng ta sẽ lấy nó thông qua CapabilityManager.get()
+ // Note: Trong 1.16.5, capability được tạo tự động sau khi register, không cần getCapability
+ }
 
     /**
      * Provider thực thi việc expose capability ra bên ngoài.

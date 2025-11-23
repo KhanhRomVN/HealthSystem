@@ -10,6 +10,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -41,16 +42,16 @@ public class StatsCommand {
     private static LiteralArgumentBuilder<CommandSource> buildRoot() {
         return Commands.literal("stats")
                 .then(Commands.literal("get").executes(StatsCommand::handleGet))
-                .then(Commands.literal("set")
-                        .then(Commands.argument("name", net.minecraft.command.arguments.StringArgumentType.string())
-                                .then(Commands.argument("value", IntegerArgumentType.integer(-1000, 1000))
-                                        .executes(StatsCommand::handleSet))))
-                // Alias ngắn
-                .then(Commands.literal("getstats").executes(StatsCommand::handleGet))
-                .then(Commands.literal("setstat")
-                        .then(Commands.argument("name", net.minecraft.command.arguments.StringArgumentType.string())
-                                .then(Commands.argument("value", IntegerArgumentType.integer(-1000, 1000))
-                                        .executes(StatsCommand::handleSet))));
+ .then(Commands.literal("set")
+ .then(Commands.argument("name", StringArgumentType.string())
+ .then(Commands.argument("value", IntegerArgumentType.integer(-1000, 1000))
+ .executes(StatsCommand::handleSet))))
+ // Alias ngắn
+ .then(Commands.literal("getstats").executes(StatsCommand::handleGet))
+ .then(Commands.literal("setstat")
+ .then(Commands.argument("name", StringArgumentType.string())
+ .then(Commands.argument("value", IntegerArgumentType.integer(-1000, 1000))
+ .executes(StatsCommand::handleSet))));
     }
 
     private static int handleGet(CommandContext<CommandSource> ctx) {
@@ -77,7 +78,7 @@ public class StatsCommand {
             return 0;
         }
         ServerPlayerEntity player = (ServerPlayerEntity) source.getEntity();
-        String name = net.minecraft.command.arguments.StringArgumentType.getString(ctx, "name");
+        String name = StringArgumentType.getString(ctx, "name");
         int value = IntegerArgumentType.getInteger(ctx, "value");
         StatType target = parseStat(name);
         if (target == null) {

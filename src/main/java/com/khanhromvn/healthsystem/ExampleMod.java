@@ -24,12 +24,12 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod("examplemod")
+@Mod("healthsystem")
 public class ExampleMod
 {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
-    public static final String MODID = "examplemod";
+    public static final String MODID = "healthsystem";
 
     public ExampleMod() {
         // Đăng ký file config trước
@@ -68,7 +68,7 @@ public class ExampleMod
     private void enqueueIMC(final InterModEnqueueEvent event)
     {
         // some example code to dispatch IMC to another mod
-        InterModComms.sendTo("examplemod", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
+        InterModComms.sendTo("healthsystem", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
     }
 
     private void processIMC(final InterModProcessEvent event)

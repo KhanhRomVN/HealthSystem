@@ -193,9 +193,9 @@ public interface IPlayerStats {
             if (get(StatType.BLOOD) < 30) {
                 player.addEffect(new EffectInstance(Effects.WEAKNESS, 40, 0, true, false));
             }
-            if (get(StatType.BLOOD) < 15) {
-                player.addEffect(new EffectInstance(Effects.MINING_FATIGUE, 40, 1, true, false));
-            }
+ if (get(StatType.BLOOD) < 15) {
+ player.addEffect(new EffectInstance(Effects.DIG_SLOWDOWN, 40, 1, true, false));
+ }
         }
 
         @Override

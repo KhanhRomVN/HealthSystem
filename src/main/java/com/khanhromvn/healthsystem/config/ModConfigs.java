@@ -1,5 +1,6 @@
 package com.khanhromvn.healthsystem.config;
 
+import com.khanhromvn.healthsystem.stats.StatType;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 /**
